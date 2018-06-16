@@ -59,9 +59,7 @@ public class ArvoreBinaria {
         return no == null ? 0 : 1 + contarNos(no.getDireita()) + contarNos(no.getEsquerda());
     }
 
-    private boolean isOnFolha(NoArvoreBinaria no) {
-        return no.getDireita() == null && no.getEsquerda() == null;
-    }
+    
 
     public String mapear(String info) {
         return mapear(raiz, info, "");
