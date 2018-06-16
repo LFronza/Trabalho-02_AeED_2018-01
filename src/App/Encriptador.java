@@ -20,8 +20,6 @@ import java.io.IOException;
  */
 public class Encriptador {
     ArvoreBinaria arvore = new ArvoreBinaria();
-    static NoArvoreBinaria no;
-    static NoArvoreBinaria novoNo;
     static String[] saida;
 
     public ArvoreBinaria getArvore() {
@@ -32,11 +30,15 @@ public class Encriptador {
         this.arvore = arvore;
     }
 
+    public Encriptador(File Origem, File Destino) throws IOException {
+        encriptarArquivo(Origem, Destino);
+    }   
+
     private void gerarArquivo(File Destino, String msg) throws IOException{
         BufferedWriter saida = new BufferedWriter(new FileWriter(Destino.getPath()));
         String[] codigo = encriptar(msg);
         for (int i = 0; i < codigo.length; i++) {
-            saida.write(codigo[i]);
+            saida.write(" "+codigo[i]);
             saida.newLine();
         }
             saida.flush();
@@ -116,7 +118,7 @@ public class Encriptador {
         return binario;
     }
     
-    public void encriptarArquivo(File Origem, File Destino) throws IOException{
+    private void encriptarArquivo(File Origem, File Destino) throws IOException{
         gerarArquivo(Destino, lerArquivo(Origem));
     }
    

@@ -14,12 +14,12 @@ import javax.swing.JFileChooser;
  */
 public class Testes {
     public static void main(String[] args) throws IOException {
-        Encriptador e = new Encriptador();
+        
         JFileChooser jfIn = new JFileChooser();
         jfIn.showOpenDialog(null);
         JFileChooser jfOut = new JFileChooser();
         jfOut.showOpenDialog(null);
-        e.encriptarArquivo(jfIn.getSelectedFile(), jfOut.getSelectedFile());
+        new Decriptador(jfIn.getSelectedFile(), jfOut.getSelectedFile());
         
     }
 }

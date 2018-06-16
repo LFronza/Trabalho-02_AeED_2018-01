@@ -20,9 +20,15 @@ public class NoArvoreBinaria {
         this.qtd = qtd;
     }
 
-    public NoArvoreBinaria() {
+    public NoArvoreBinaria(String info) {
+        setInfo(info);
     }
 
+    public NoArvoreBinaria() {
+    }
+   
+    
+    
     public int getQtd() {
         return qtd;
     }

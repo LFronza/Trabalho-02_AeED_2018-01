@@ -79,9 +79,9 @@ public class ListaEstatica<T> {
 
     @Override
     public String toString() {
-        String aux = "Valores: ";
+        String aux = "";
         for (int i = 0; i < info.length; i++) {
-            aux += info[i] + ", ";
+            aux += info[i] + " ";
         }
         return aux;
     }
