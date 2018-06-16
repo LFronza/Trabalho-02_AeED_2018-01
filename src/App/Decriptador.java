@@ -31,19 +31,16 @@ public class Decriptador {
         ListaEstatica<String> caminho = new ListaEstatica<>();
         String[] msgVet = msg.split("\n");
         int linhas = Integer.parseInt(msgVet[0]);
-        for (int i = 1; i < linhas + 1; i++) {
-            if(!msgVet[i].equals("")){
+        for (int i = 1; i < linhas + 1; i++) {      
             letras.inserir(ASCIItoString(msgVet[i]));
             caminho.inserir(getCaminho(msgVet[i]));
-            }
         }
         ArvoreBinaria arvore = new ArvoreBinaria();
         arvore.setRaiz(new NoArvoreBinaria());
         for (int i = 0; i < letras.getTamanho(); i++) {
             fazerArvore(arvore.getRaiz(), letras.obterElemento(i), caminho.obterElemento(i));
         }
-        System.out.println(arvore.toString());
-        return "";
+        return lerCodigo(arvore, msgVet[msgVet.length-1]);
     }
     
     private void gerarArquivo(File Destino, String msg) throws IOException{
@@ -112,6 +109,7 @@ public class Decriptador {
                         no.setDireita(new NoArvoreBinaria(letra));
                     } else {
                         no.setDireita(new NoArvoreBinaria());
+                        no = no.getDireita();
                     }
                 } break;
                 case '0': if(no.getEsquerda() != null){
@@ -121,13 +119,35 @@ public class Decriptador {
                     no.setEsquerda(new NoArvoreBinaria(letra));
                 } else {
                         no.setEsquerda(new NoArvoreBinaria());
+                        no = no.getEsquerda();
                     }
                 } break;
                 default: throw new RuntimeException("caminho inválido");
             }
         }
     }
-    private void lerCodigo(ArvoreBinaria raiz, String codigo){
-        
+    private String lerCodigo(ArvoreBinaria arvore, String codigo){
+        String saida = "";
+        NoArvoreBinaria no = arvore.getRaiz();
+        for (int i = 0; i < codigo.length(); i++) {
+            switch(codigo.charAt(i)){
+                case '1': no = no.getDireita();
+                            if(isOnFolha(no)){
+                                saida += no.getInfo();
+                                no = arvore.getRaiz();
+                            } break;
+                case '0': no = no.getEsquerda();
+                            if(isOnFolha(no)){
+                                saida += no.getInfo();
+                                no = arvore.getRaiz();
+                            } break;
+                default: break;
+            }
+        }
+        return saida;
+    }
+    
+    private boolean isOnFolha(NoArvoreBinaria no) {
+        return no.getDireita() == null && no.getEsquerda() == null;
     }
 }

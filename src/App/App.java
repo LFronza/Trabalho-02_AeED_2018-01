@@ -144,9 +144,9 @@ public class App extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(tfDestino, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btDestino))
-                .addGap(39, 39, 39)
+                .addGap(27, 27, 27)
                 .addComponent(btOk)
-                .addContainerGap(37, Short.MAX_VALUE))
+                .addContainerGap(13, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -191,6 +191,7 @@ public class App extends javax.swing.JFrame {
         }else if (rbDecomp.isSelected() && isOk()){
             try {
                 new Decriptador(jfIn.getSelectedFile(), jfOut.getSelectedFile());
+                JOptionPane.showMessageDialog(null, "Descompactação realizada com sucesso!");
             } catch (IOException ex) {
                 Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
             } catch (RuntimeException run){

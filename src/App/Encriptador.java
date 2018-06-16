@@ -85,6 +85,7 @@ public class Encriptador {
             nos.retirar(nos.obterElemento(0));
         }
         arvore.setRaiz(nos.obterElemento(0));
+        
         saida = new String[contaChar.length + 2];
         saida[0] = "" + contaChar.length;
         int charNr;
@@ -124,12 +125,7 @@ public class Encriptador {
    
     private String lerArquivo(File Arquivo) throws IOException{
         BufferedReader in = new BufferedReader(new FileReader(Arquivo.getAbsolutePath()));
-                int rd = in.read();
-                String saida = "";
-                while(rd != -1){
-                    saida = in.readLine();
-                    rd = in.read();
-                }
+                String saida = in.readLine(); 
                 in.close();
                 return saida;
     }
