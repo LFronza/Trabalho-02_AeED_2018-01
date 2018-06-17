@@ -5,25 +5,32 @@
  */
 package App;
 
+import Main.Decriptador;
+import Main.Encriptador;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import jdk.nashorn.internal.parser.TokenType;
 
 /**
  *
  * @author Leonardo
  */
 public class App extends javax.swing.JFrame {
+
     JFileChooser jfIn;
     JFileChooser jfOut;
+
     /**
      * Creates new form App
      */
     public App() {
         initComponents();
+        JOptionPane.showMessageDialog(rootPane, "Esta é a versão de testes permanente de 30 dias, compre para remover este aviso");
     }
 
     /**
@@ -52,6 +59,7 @@ public class App extends javax.swing.JFrame {
         setResizable(false);
 
         Buttons.add(rbComp);
+        rbComp.setSelected(true);
         rbComp.setText("Compactar");
 
         Buttons.add(rbDecomp);
@@ -172,6 +180,13 @@ public class App extends javax.swing.JFrame {
         jfIn = new JFileChooser();
         jfIn.showOpenDialog(null);
         tfOrigem.setText(jfIn.getSelectedFile().getAbsolutePath());
+        if (jfOut == null) {
+            if (rbComp.isSelected()) {
+                tfDestino.setText(jfIn.getSelectedFile().getAbsolutePath().replaceAll(".txt", "Zip.txt"));
+            } else {
+                tfDestino.setText(jfIn.getSelectedFile().getAbsolutePath().replaceAll(".txt", "Unzip.txt"));
+            }
+        }
     }//GEN-LAST:event_btOrigemActionPerformed
 
     private void btDestinoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btDestinoActionPerformed
@@ -181,24 +196,26 @@ public class App extends javax.swing.JFrame {
     }//GEN-LAST:event_btDestinoActionPerformed
 
     private void btOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btOkActionPerformed
-        if(rbComp.isSelected() && isOk()){
+        if (rbComp.isSelected() && jfIn != null) {
             try {
-                new Encriptador(jfIn.getSelectedFile(), jfOut.getSelectedFile());
+                new Encriptador(jfIn.getSelectedFile(), criarArquivo());
                 JOptionPane.showMessageDialog(null, "Compactação realizada com sucesso!");
             } catch (IOException ex) {
                 Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }else if (rbDecomp.isSelected() && isOk()){
-            try {
-                new Decriptador(jfIn.getSelectedFile(), jfOut.getSelectedFile());
-                JOptionPane.showMessageDialog(null, "Descompactação realizada com sucesso!");
-            } catch (IOException ex) {
-                Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (RuntimeException run){
-                JOptionPane.showMessageDialog(null, run.getLocalizedMessage());
+        } else {
+            if (rbDecomp.isSelected() && jfIn != null) {
+                try {
+                    new Decriptador(jfIn.getSelectedFile(), criarArquivo());
+                    JOptionPane.showMessageDialog(null, "Descompactação realizada com sucesso!");
+                } catch (IOException ex) {
+                    Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (RuntimeException run) {
+                    JOptionPane.showMessageDialog(null, run.getLocalizedMessage());
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Todos os campos são obrigatórios");
             }
-        }else {
-            JOptionPane.showMessageDialog(null, "Todos os campos são obrigatórios");
         }
     }//GEN-LAST:event_btOkActionPerformed
 
@@ -236,9 +253,20 @@ public class App extends javax.swing.JFrame {
             }
         });
     }
-    private boolean isOk(){
-        return jfIn != null && jfOut != null;
+
+    
+
+    private File criarArquivo() throws IOException {
+        if (jfOut != null) {
+            return jfOut.getSelectedFile();
+        } else {
+            File novoArquivo = new File(tfDestino.getText());
+            novoArquivo.createNewFile(); // if file already exists will do nothing 
+            new FileOutputStream(novoArquivo, false);
+            return novoArquivo;
+        }
     }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup Buttons;
     private javax.swing.JButton btDestino;

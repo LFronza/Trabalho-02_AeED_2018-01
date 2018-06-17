@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package App;
+package Main;
 
 import ArvoreB.ArvoreBinaria;
 import ArvoreB.NoArvoreBinaria;
