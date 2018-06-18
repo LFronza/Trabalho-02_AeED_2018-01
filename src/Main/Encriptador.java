@@ -39,7 +39,7 @@ public class Encriptador {
         BufferedWriter saida = new BufferedWriter(new FileWriter(Destino.getPath()));
         String[] codigo = encriptar(msg);
         for (int i = 0; i < codigo.length; i++) {
-            saida.write(" " + codigo[i]);
+            saida.write(codigo[i]);
             saida.newLine();
         }
         saida.flush();
@@ -112,15 +112,18 @@ public class Encriptador {
         gerarArquivo(Destino, lerArquivo(Origem));
     }
 
-    private String lerArquivo(File Arquivo) throws IOException {
-        BufferedReader in = new BufferedReader(new FileReader(Arquivo.getAbsolutePath()));
-        String saida = in.readLine();
-        in.close();
-        if (saida.length() <= 1) {
-            throw new RuntimeException("O texto é curto demais para ser compactado");
-        } else {
-            return saida;
-        }
+    private String lerArquivo(File arquivo) throws IOException {
+        String txt = "";
+		BufferedReader comandos = new BufferedReader(new FileReader(arquivo));
+		String str = comandos.readLine();
+		while (str != null) {
+			if (!str.isEmpty()) {
+				txt += str + "\n";
+			}
+			str = comandos.readLine();
+		}
+		comandos.close();
+		return txt;
     }
 
     private NoArvoreBinaria criarArvore(ListaEstatica lista, int[] contaChar) {

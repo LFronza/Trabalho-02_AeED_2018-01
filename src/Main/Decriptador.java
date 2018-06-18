@@ -76,16 +76,18 @@ public class Decriptador {
  * @return String com o conteúdo lido
  * @throws IOException Arquivo não encontrado
  */
-    private String lerArquivo(File Arquivo) throws IOException{
-        BufferedReader in = new BufferedReader(new FileReader(Arquivo.getAbsolutePath()));
-                int rd = in.read();
-                String saida = "";
-                while(rd != -1){
-                    saida += in.readLine() + "\n";
-                    rd = in.read();
-                }
-                in.close();
-                return saida;
+    private String lerArquivo(File arquivo) throws IOException{
+        String txt = "";
+		BufferedReader comandos = new BufferedReader(new FileReader(arquivo));
+		String str = comandos.readLine();
+		while (str != null) {
+			if (!str.isEmpty()) {
+				txt += str + "\n";
+			}
+			str = comandos.readLine();
+		}
+		comandos.close();
+		return txt;
     }
 /**
  * Lê os números antes do '=' e retorna o caractere com de respactivo valor da tabela ASCII
