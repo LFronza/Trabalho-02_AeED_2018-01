@@ -19,6 +19,7 @@ import java.io.IOException;
  * @author Leonardo Fronza
  */
 public class Encriptador {
+
     ArvoreBinaria arvore = new ArvoreBinaria();
     static String[] saida;
 
@@ -32,30 +33,32 @@ public class Encriptador {
 
     public Encriptador(File Origem, File Destino) throws IOException {
         encriptarArquivo(Origem, Destino);
-    }   
+    }
 
-    private void gerarArquivo(File Destino, String msg) throws IOException{
+    private void gerarArquivo(File Destino, String msg) throws IOException {
         BufferedWriter saida = new BufferedWriter(new FileWriter(Destino.getPath()));
         String[] codigo = encriptar(msg);
         for (int i = 0; i < codigo.length; i++) {
-            saida.write(" "+codigo[i]);
+            saida.write(" " + codigo[i]);
             saida.newLine();
         }
-            saida.flush();
-            saida.close();
+        saida.flush();
+        saida.close();
     }
-    
+
     private String[] encriptar(String msg) {
         char[] msgChar = msg.toCharArray();
         ListaEstatica<Character> lista;
         lista = new ListaEstatica();
+        //cria uma lista contendo os caracteres
         for (int i = 0; i < msgChar.length; i++) {
             if (!lista.contem(msgChar[i])) {
                 lista.inserir(msgChar[i]);
             }
         }
+        //cria um vetor contendo a quantidade de repetição de cada caractere
         int[] contaChar = contadorDeChar(lista, msgChar);
-        // ordena os caracteres da forma decrescente
+        // ordena os caracteres da forma crescente
         for (int i = 0; i < contaChar.length - 1; i++) {
             for (int j = 0; j < contaChar.length - 1; j++) {
                 if (contaChar[j] > contaChar[j + 1]) {
@@ -69,32 +72,18 @@ public class Encriptador {
                 }
             }
         }
-        
-        ListaEstatica<NoArvoreBinaria> nos = new ListaEstatica();
-
-        for (int i = 0; i < lista.getTamanho(); i++) {
-            nos.inserir(new NoArvoreBinaria(lista.obterElemento(i).toString(), contaChar[i]));
-        }
-
-        int soma;
-
-        while (nos.getTamanho() > 1) {
-            soma = nos.obterElemento(0).getQtd() + nos.obterElemento(1).getQtd();
-            nos.inserir(new NoArvoreBinaria(soma + "", nos.obterElemento(0), nos.obterElemento(1), soma));
-            nos.retirar(nos.obterElemento(0));
-            nos.retirar(nos.obterElemento(0));
-        }
-        arvore.setRaiz(nos.obterElemento(0));
-        
+        //cria a arvore binária
+        arvore.setRaiz(criarArvore(lista, contaChar));
+        //compacta o texto no algoritmo de Huffman
         saida = new String[contaChar.length + 2];
         saida[0] = "" + contaChar.length;
         int charNr;
         for (int i = 1; i < contaChar.length + 1; i++) {
-            charNr = (int) lista.obterElemento(i-1).charValue();
-            saida[i] = charNr+"="+arvore.mapear(lista.obterElemento(i-1)+"");
+            charNr = (int) lista.obterElemento(i - 1).charValue();
+            saida[i] = charNr + "=" + arvore.mapear(lista.obterElemento(i - 1) + "");
         }
-        saida[contaChar.length+1] = fraseEncriptada(msg);
-        
+        saida[contaChar.length + 1] = fraseEncriptada(msg);
+
         return saida;
     }
 
@@ -110,23 +99,44 @@ public class Encriptador {
 
         return aux;
     }
-    
-    private String fraseEncriptada(String frase){
+
+    private String fraseEncriptada(String frase) {
         String binario = "";
         for (int i = 0; i < frase.length(); i++) {
-            binario += arvore.mapear(""+ frase.charAt(i));
+            binario += arvore.mapear("" + frase.charAt(i));
         }
         return binario;
     }
-    
-    private void encriptarArquivo(File Origem, File Destino) throws IOException{
+
+    private void encriptarArquivo(File Origem, File Destino) throws IOException {
         gerarArquivo(Destino, lerArquivo(Origem));
     }
-   
-    private String lerArquivo(File Arquivo) throws IOException{
+
+    private String lerArquivo(File Arquivo) throws IOException {
         BufferedReader in = new BufferedReader(new FileReader(Arquivo.getAbsolutePath()));
-                String saida = in.readLine(); 
-                in.close();
-                return saida;
+        String saida = in.readLine();
+        in.close();
+        if (saida.length() <= 1) {
+            throw new RuntimeException("O texto é curto demais para ser compactado");
+        } else {
+            return saida;
+        }
+    }
+
+    private NoArvoreBinaria criarArvore(ListaEstatica lista, int[] contaChar) {
+        ListaEstatica<NoArvoreBinaria> nos = new ListaEstatica();
+
+        for (int i = 0; i < lista.getTamanho(); i++) {
+            nos.inserir(new NoArvoreBinaria(lista.obterElemento(i).toString(), contaChar[i]));
+        }
+        int soma;
+        while (nos.getTamanho() > 1) {
+            soma = nos.obterElemento(0).getQtd() + nos.obterElemento(1).getQtd();
+            nos.inserir(new NoArvoreBinaria(soma + "", nos.obterElemento(0), nos.obterElemento(1), soma));
+            nos.retirar(nos.obterElemento(0));
+            nos.retirar(nos.obterElemento(0));
+        }
+        return nos.obterElemento(0);
+
     }
 }

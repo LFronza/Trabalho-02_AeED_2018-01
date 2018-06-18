@@ -24,8 +24,36 @@ public class Decriptador {
     public Decriptador(File Origem, File Destino) throws IOException {
         decriptarArquivo(Origem, Destino);
     }
-    
-    
+    /**
+     * Método de decriptação do arquivo
+     * @param Origem Arquivo com o conteúdo a ser descompactado
+     * @param Destino Arquivo com onde o conteúdo descompactado será despejado
+     * @throws IOException arquivo não encontrado
+     */
+        private void decriptarArquivo(File Origem, File Destino) throws IOException{
+        gerarArquivo(Destino, lerArquivo(Origem));
+    }
+    /**
+     * Gera um novo arquivo com o conteúdo descompactado
+     * @param Destino Arquivo com onde o conteúudo descompactado será despejado
+     * @param msg conteúdo do que será depositado no arquivo
+     * @throws IOException 
+     */
+        private void gerarArquivo(File Destino, String msg) throws IOException{
+        BufferedWriter saida = new BufferedWriter(new FileWriter(Destino.getPath()));
+        String[] codigo = decriptar(msg).split("\n");
+        for (int i = 0; i < codigo.length; i++) {
+            saida.write(codigo[i]);
+            saida.newLine();
+        }
+            saida.flush();
+            saida.close();
+    }
+     /**
+      * Lê o conteúdo do arquivo e o transforma num texto legível
+      * @param msg Texto a ser decriptado
+      * @return Texto legível
+      */   
     private String decriptar(String msg){
         ListaEstatica<String> letras = new ListaEstatica<>();
         ListaEstatica<String> caminho = new ListaEstatica<>();
@@ -42,18 +70,12 @@ public class Decriptador {
         }
         return lerCodigo(arvore, msgVet[msgVet.length-1]);
     }
-    
-    private void gerarArquivo(File Destino, String msg) throws IOException{
-        BufferedWriter saida = new BufferedWriter(new FileWriter(Destino.getPath()));
-        String[] codigo = decriptar(msg).split("\n");
-        for (int i = 0; i < codigo.length; i++) {
-            saida.write(codigo[i]);
-            saida.newLine();
-        }
-            saida.flush();
-            saida.close();
-    }
-    
+/**
+ * Lê o conteúdo do arquivo
+ * @param Arquivo Aquivo a ser lido
+ * @return String com o conteúdo lido
+ * @throws IOException Arquivo não encontrado
+ */
     private String lerArquivo(File Arquivo) throws IOException{
         BufferedReader in = new BufferedReader(new FileReader(Arquivo.getAbsolutePath()));
                 int rd = in.read();
@@ -65,11 +87,11 @@ public class Decriptador {
                 in.close();
                 return saida;
     }
-    
-    private void decriptarArquivo(File Origem, File Destino) throws IOException{
-        gerarArquivo(Destino, lerArquivo(Origem));
-    }
-    
+/**
+ * Lê os números antes do '=' e retorna o caractere com de respactivo valor da tabela ASCII
+ * @param linha a linha a ser lida
+ * @return o caractere com de respactivo valor da tabela ASCII
+ */
     private String ASCIItoString(String linha){
         char[] letras = linha.toCharArray();
         String aux = "";

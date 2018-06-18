@@ -30,7 +30,8 @@ public class App extends javax.swing.JFrame {
      */
     public App() {
         initComponents();
-        JOptionPane.showMessageDialog(rootPane, "Esta é a versão de testes permanente de 30 dias, compre para remover este aviso");
+        JOptionPane.showMessageDialog(null, " Esta é a versão de testes permanente de 30 dias:\n "
+                + "Pague 999 suaves prestações de 0,0025 centavos para remover este aviso.");
     }
 
     /**
@@ -196,27 +197,24 @@ public class App extends javax.swing.JFrame {
     }//GEN-LAST:event_btDestinoActionPerformed
 
     private void btOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btOkActionPerformed
+      try{
         if (rbComp.isSelected() && jfIn != null) {
-            try {
                 new Encriptador(jfIn.getSelectedFile(), criarArquivo());
                 JOptionPane.showMessageDialog(null, "Compactação realizada com sucesso!");
-            } catch (IOException ex) {
-                Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } else {
+                 } else {
             if (rbDecomp.isSelected() && jfIn != null) {
-                try {
                     new Decriptador(jfIn.getSelectedFile(), criarArquivo());
                     JOptionPane.showMessageDialog(null, "Descompactação realizada com sucesso!");
-                } catch (IOException ex) {
-                    Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (RuntimeException run) {
-                    JOptionPane.showMessageDialog(null, run.getLocalizedMessage());
-                }
             } else {
-                JOptionPane.showMessageDialog(null, "Todos os campos são obrigatórios");
+                JOptionPane.showMessageDialog(null, "É necessário escolher o arquivo");
             }
         }
+      }catch(IOException io){
+          JOptionPane.showMessageDialog(null, "Arquivo não encontrado: "+io.getMessage());
+      }catch(RuntimeException run){
+          JOptionPane.showMessageDialog(null, run.getLocalizedMessage());
+      }
+      
     }//GEN-LAST:event_btOkActionPerformed
 
     /**
