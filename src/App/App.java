@@ -5,22 +5,15 @@
  */
 package App;
 
-import Main.Decriptador;
-import Main.Encriptador;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
+import Main.*;
+import java.io.*;
+import javax.swing.*;
 
 /**
  *
- * @author Leonardo
+ * @author Leonardo Fronza, Heitor Ugarte Calvet da Silveira,
  */
-public class App extends javax.swing.JFrame {
+public class App extends JFrame {
 
     JFileChooser jfIn;
     JFileChooser jfOut;
@@ -197,24 +190,22 @@ public class App extends javax.swing.JFrame {
     }//GEN-LAST:event_btDestinoActionPerformed
 
     private void btOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btOkActionPerformed
-      try{
-        if (rbComp.isSelected() && jfIn != null) {
+        try {
+            if (rbComp.isSelected() && jfIn != null) {
                 new Encriptador(jfIn.getSelectedFile(), criarArquivo());
                 JOptionPane.showMessageDialog(null, "Compactação realizada com sucesso!");
-                 } else {
-            if (rbDecomp.isSelected() && jfIn != null) {
-                    new Decriptador(jfIn.getSelectedFile(), criarArquivo());
-                    JOptionPane.showMessageDialog(null, "Descompactação realizada com sucesso!");
+            } else if (rbDecomp.isSelected() && jfIn != null) {
+                new Decriptador(jfIn.getSelectedFile(), criarArquivo());
+                JOptionPane.showMessageDialog(null, "Descompactação realizada com sucesso!");
             } else {
                 JOptionPane.showMessageDialog(null, "É necessário escolher o arquivo");
             }
+        } catch (IOException io) {
+            JOptionPane.showMessageDialog(null, "Arquivo não encontrado: " + io.getMessage());
+        } catch (RuntimeException run) {
+            JOptionPane.showMessageDialog(null, run.getLocalizedMessage());
         }
-      }catch(IOException io){
-          JOptionPane.showMessageDialog(null, "Arquivo não encontrado: "+io.getMessage());
-      }catch(RuntimeException run){
-          JOptionPane.showMessageDialog(null, run.getLocalizedMessage());
-      }
-      
+
     }//GEN-LAST:event_btOkActionPerformed
 
     /**
@@ -251,8 +242,6 @@ public class App extends javax.swing.JFrame {
             }
         });
     }
-
-    
 
     private File criarArquivo() throws IOException {
         if (jfOut != null) {
