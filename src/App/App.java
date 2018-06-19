@@ -11,7 +11,7 @@ import javax.swing.*;
 
 /**
  *
- * @author Leonardo Fronza, Heitor Ugarte Calvet da Silveira,
+ * @author Leonardo Fronza, Heitor Ugarte Calvet da Silveira, Guilherme Rosa da Silva
  */
 public class App extends JFrame {
 

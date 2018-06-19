@@ -15,21 +15,20 @@ import java.io.*;
  * @author Leonardo Fronza
  */
 public class Encriptador {
-    
-    ArvoreBinaria arvore;
+    private ArvoreBinaria arvore;
 
      /**
      * Getter da árvore
      * @return árvore binária
      */
-    public ArvoreBinaria getArvore() {
+    private ArvoreBinaria getArvore() {
         return arvore;
     }
     /**
      * Define uma nova ávore binária
      * @param arvore a nova árvore binária
      */
-    public void setArvore(ArvoreBinaria arvore) {
+    private void setArvore(ArvoreBinaria arvore) {
         this.arvore = arvore;
     }
     /**

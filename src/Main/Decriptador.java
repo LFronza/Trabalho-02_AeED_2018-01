@@ -232,7 +232,7 @@ public class Decriptador {
      * Getter da árvore
      * @return árvore binária
      */
-    public ArvoreBinaria getArvore() {
+    private ArvoreBinaria getArvore() {
         return arvore;
     }
 
@@ -240,7 +240,7 @@ public class Decriptador {
      * Define uma nova ávore binária
      * @param arvore a nova árvore binária
      */
-    public void setArvore(ArvoreBinaria arvore) {
+    private void setArvore(ArvoreBinaria arvore) {
         this.arvore = arvore;
     }
 }
